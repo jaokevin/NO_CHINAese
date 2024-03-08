@@ -37,7 +37,7 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 
 def NOCHINAese_response(text):
     if msg != '怎麼用' or msg != '要怎麼用':
-        break
+        return
     else:
         # 基礎URL
         base_url = "https://api.zhconvert.org/convert"
