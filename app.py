@@ -23,15 +23,36 @@ line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 # Channel Secret
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 # OPENAI API Key初始化設定
-openai.api_key = os.getenv('OPENAI_API_KEY')
+# openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
-def GPT_response(text):
-    # 接收回應
-    response = openai.Completion.create(model="gpt-3.5-turbo-instruct", prompt=text, temperature=0.5, max_tokens=500)
-    print(response)
-    # 重組回應
-    answer = response['choices'][0]['text'].replace('。','')
+# def GPT_response(text):
+#     # 接收回應
+#     response = openai.Completion.create(model="gpt-3.5-turbo-instruct", prompt=text, temperature=0.5, max_tokens=500)
+#     print(response)
+#     # 重組回應
+#     answer = response['choices'][0]['text'].replace('。','')
+#     return answer
+
+def NOCHINAese_response(text):
+    # 基礎URL
+    base_url = "https://api.zhconvert.org/convert"
+
+    # 請求參數
+    params = {
+        'text': text,
+        'converter': 'Taiwan'
+    }
+
+    # 發送POST請求，並將參數添加到URL中
+    response = requests.post(base_url, params=params)
+    if response.status_code == 200:
+    data = response.json()
+    # print(data)
+    else:
+    print(f"請求失敗，狀態碼：{response.status_code}")
+    outcome = data['data']['text']
+    answer = outcome + "\n" + '-----' + '\n' + '本服務基於繁化姬API，禁止商業使用。繁化姬官網：https://zhconvert.org/'
     return answer
 
 
@@ -56,7 +77,7 @@ def callback():
 def handle_message(event):
     msg = event.message.text
     try:
-        GPT_answer = GPT_response(msg)
+        GPT_answer = NOCHINAese_response(msg)
         print(GPT_answer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
     except:
