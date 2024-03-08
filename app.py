@@ -53,7 +53,7 @@ def NOCHINAese_response(text):
     else:
         print(f"請求失敗，狀態碼：{response.status_code}")
     outcome = data['data']['text']
-    answer = outcome + "\n" + '-----' + '\n' + '本服務基於繁化姬API，禁止商業使用。繁化姬官網：https://zhconvert.org/'
+    answer = outcome + "\n" + '-----' + '\n' + '本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org'
     return answer
 
 
