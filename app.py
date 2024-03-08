@@ -77,7 +77,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    if msg = '怎麼用' or '要怎麼用':
+    if msg == '怎麼用' or msg == '要怎麼用':
         try:
             GPT_answer = NOCHINAese_response(msg)
             print(GPT_answer)
