@@ -36,6 +36,8 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 #     return answer
 
 def NOCHINAese_response(text):
+   if msg != '怎麼用' or msg != '要怎麼用':
+       break
     # 基礎URL
     base_url = "https://api.zhconvert.org/convert"
 
@@ -77,14 +79,14 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    if msg != '怎麼用' or msg != '要怎麼用':
-        try:
-            GPT_answer = NOCHINAese_response(msg)
-            print(GPT_answer)
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
-        except:
-            print(traceback.format_exc())
-            line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
+    # if msg != '怎麼用' or msg != '要怎麼用':
+    try:
+        GPT_answer = NOCHINAese_response(msg)
+        print(GPT_answer)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
+    except:
+        print(traceback.format_exc())
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
         
 
 @handler.add(PostbackEvent)
