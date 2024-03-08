@@ -36,28 +36,29 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 #     return answer
 
 def NOCHINAese_response(text):
-    if msg == '怎麼用' or msg == '要怎麼用':
-        return
+    # if msg == '怎麼用' or msg == '要怎麼用':
+    #     return
+    # else:
+    
+    # 基礎URL
+    base_url = "https://api.zhconvert.org/convert"
+
+    # 請求參數
+    params = {
+        'text': text,
+        'converter': 'Taiwan'
+    }
+
+    # 發送POST請求，並將參數添加到URL中
+    response = requests.post(base_url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        # print(data)
     else:
-        # 基礎URL
-        base_url = "https://api.zhconvert.org/convert"
-    
-        # 請求參數
-        params = {
-            'text': text,
-            'converter': 'Taiwan'
-        }
-    
-        # 發送POST請求，並將參數添加到URL中
-        response = requests.post(base_url, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            # print(data)
-        else:
-            print(f"請求失敗，狀態碼：{response.status_code}")
-        outcome = data['data']['text']
-        answer = outcome + "\n" + '-----' + '\n' + '本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org'
-        return answer
+        print(f"請求失敗，狀態碼：{response.status_code}")
+    outcome = data['data']['text']
+    answer = outcome + "\n" + '-----' + '\n' + '本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org'
+    return answer
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -86,9 +87,9 @@ def handle_message(event):
         print(GPT_answer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
     except:
-        return None
-        # print(traceback.format_exc())
-        # line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
+        # return None
+        print(traceback.format_exc())
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
         
 
 @handler.add(PostbackEvent)
