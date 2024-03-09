@@ -87,11 +87,19 @@ def handle_message(event):
         GPT_answer = NOCHINAese_response(msg)
         print(GPT_answer)
         print('本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org')
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer, '本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org'))
+        line_bot_api.reply_message(
+            event.reply_token, 
+            [
+                TextSendMessage(text=GPT_answer),
+                TextSendMessage(text='本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org')
+            ]
+        )
     except:
-        # return None
         print(traceback.format_exc())
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
+        line_bot_api.reply_message(
+            event.reply_token, 
+            TextSendMessage(text='你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息')
+        )
         
 
 @handler.add(PostbackEvent)
