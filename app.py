@@ -57,7 +57,8 @@ def NOCHINAese_response(text):
     else:
         print(f"請求失敗，狀態碼：{response.status_code}")
     outcome = data['data']['text']
-    answer = outcome + "\n" + '-----' + '\n' + '本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org'
+    # answer = outcome + "\n" + '-----' + '\n' + '本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org'
+    answer = outcome
     return answer
 
 
@@ -85,7 +86,8 @@ def handle_message(event):
     try:
         GPT_answer = NOCHINAese_response(msg)
         print(GPT_answer)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
+        print('本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org')
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer, '本服務基於繁化姬API，禁止商業使用。繁化姬官網：zhconvert . org'))
     except:
         # return None
         print(traceback.format_exc())
